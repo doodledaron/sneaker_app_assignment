@@ -50,6 +50,9 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
+def payment(request):
+    return render(request, 'payment.html', {})
+
 #to render the products page: example
 # <!DOCTYPE html>
 # <html lang="en">
