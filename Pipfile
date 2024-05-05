@@ -8,7 +8,9 @@ django = "==5.0.4"
 asgiref = "==3.8.1"
 sqlparse = "==0.5.0"
 tzdata = "==2024.1"
-mssql-django = "*"
+mssql-django = "==1.5"
+pyodbc = "==5.1.0"
+pytz = "==2024.1"
 
 [dev-packages]
 
