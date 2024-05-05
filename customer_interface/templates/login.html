@@ -1,0 +1,9 @@
+<h1>Login</h1>
+<div style="text-align: center;">
+    <form method="POST" style="display: inline-block;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+        <a href="{% url 'signup' %}">Don't have an account? Create one</a>
+    </form>
+</div>

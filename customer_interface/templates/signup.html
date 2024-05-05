@@ -1,0 +1,15 @@
+<h1>Signup</h1>
+<form method="POST" class="centered-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Signup</button>
+    <a href="{% url 'login' %}">Already have an account?</a>
+</form>
+
+{% comment %} {{ form.as_p }} – Render Django Forms as paragraph {% endcomment %}
+
+<style>
+    .centered-form {
+        text-align: center;
+    }
+</style>
