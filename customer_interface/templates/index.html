@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carpe Diem</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+    <p>{{ request.user.username }}</p>
+    <a href="{% url 'logout' %}">Logout</a>
+     <div class = "container">
+        <div class = "header">
+            <div class = "logo">
+                <img src="{% static 'images/logo.png' %}" width = "200px">
+            </div>
+    
+            <div class = "action">
+                <div class = "search">
+                    <img src = "{% static 'images/search.png' %}" width="35px">
+                </div>
+    
+                
+                <div class = "addtocart">
+                    <a href="{% url 'cart' %}">
+                        <img src = "{% static 'images/cart.png' %}" width="35px">
+                    </a>
+                </div>  
+    
+            </div>
+        </div>
+        <div class="title">
+            <div class="title-1">
+                <img src = "{% static 'images/s1.png' %}" width="300">
+            </div>
+
+            <div class="title-1">
+                <h1>Spring-Summer 2024</h1>  
+                <h2>Sneakers</h2>
+            </div>
+            
+        </div>
+
+        <div class="product">
+            <div class="s2">
+                <img src = "{% static 'images/s2.png' %}">
+                <p>CHANEL TRAINER SNEAKER</p>
+            </div>
+            <div class="s3">
+                <img src = "{% static 'images/s3.png' %}">
+                <p>VERY VIVIER STRASS BUCKLE SNEAKERS IN LEATHER</p>
+            </div>
+            <div class="s4">
+                <img src = "{% static 'images/s4.png' %}">
+                <p>WALK'N'DIOR PLATFORM SNEAKER</p>
+            </div>
+            <div class="s5">
+                <img src = "{% static 'images/s5.jpg' %}">
+                <p>LOW-TOP SNEAKERS IN PERFORATED LEATHER</p>
+            </div>
+            <div class="s6">
+                <img src = "{% static 'images/s6.png' %}">
+                <p>LV TRAINER MAXI SNEAKER</p>
+            </div>
+            <div class="s7">
+                <img src = "{% static 'images/s7.png' %}">
+                <p>DOUBLE WHEEL RE-NYLON GABARDINE SNEAKER</p>
+            </div>
+            <div class="s8">
+                <img src ="{% static 'images/s8.png' %}">
+                <p>WOMEN'S TRIPLE S SNEAKER IN BLACK</p>
+            </div>
+            <div class="s9">
+                <img src = "{% static 'images/s9.png' %}">
+                <p>LOW LACE-UP SNEAKER IN CALFSKIN</p>
+            </div>
+        </div>
+
+    </div> 
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Signup</a>
+  {% endif %}
+
+</body>
+</html>
