@@ -10,8 +10,8 @@ def index(request):
     # return render(request, 'home.html', {'sneakers' : sneakers})
     return render(request, 'index.html', {}) # this will render the home.html file from the templates folder
 
-def navigate_cart(request):
-    return render(request, 'cart.html', {})
+def product_details(request):
+    return render(request, 'product_details.html', {})
 
 def user_signup(request):
     #if the request is post, then the form is submitted
@@ -50,8 +50,8 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-def payment(request):
-    return render(request, 'payment.html', {})
+def cart(request):
+    return render(request, 'cart.html', {})
 
 #to render the products page: example
 # <!DOCTYPE html>
