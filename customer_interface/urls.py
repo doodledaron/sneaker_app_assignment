@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name="index"), # when www.example.com/ is asked, it will call the home function from views.py
-    path('product_details/', views.product_details, name="product_details"), # when www.example.com/ is asked, it will call the home function from views.py
+    path('product_details/<str:sneaker_id>/', views.product_details, name="product_details"), # when www.example.com/ is asked, it will call the home function from views.py
        path('', views.index, name='home'),
     path('login/', views.user_login, name='login'),
     path('signup/', views.user_signup, name='signup'),

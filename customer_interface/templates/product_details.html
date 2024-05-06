@@ -33,11 +33,11 @@
 
         <div class="item">
             <div class="image">
-                <img src="{% static 'images/s3.png' %}" width="400px">
+                <img src="{{sneaker.sneaker_url}}" width="400px">
             </div>
             <div class="sneaker-info">
-                <h3 class="fw-bold">VERY VIVIER STRASS BUCKLE SNEAKERS<br>IN LEATHER</h3>
-                <h4>BRAND: ROGER VIVIER</h4>
+                <h3 class="fw-bold">{{sneaker.sneaker_name}}<br>IN LEATHER</h3>
+                <h4>BRAND: {{sneaker.sneaker_brand}}</h4>
 
                 <div class="size">
                     <p>SIZE: </p>

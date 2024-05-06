@@ -1,17 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login,logout
 from .forms import SignUpForm, LoginForm
+from admin_panel.models import Sneaker
 
 
 # Create your views here.
 def index(request):
-    #fetch all sneakers from the database
-    # sneakers = Sneakers.objects.all()
-    # return render(request, 'home.html', {'sneakers' : sneakers})
-    return render(request, 'index.html', {}) # this will render the home.html file from the templates folder
+    try:
+        # fetch all sneakers from the database
+        sneakers = Sneaker.objects.all()
+        print(sneakers)
+        return render(request, 'index.html', {'sneakers' : sneakers})
+    except Exception as e:
+        # handle the exception here
+        # you can log the error or display a custom error message
+        print(e)
+        return render(request, 'error.html', {'error_message': str(e)})
 
-def product_details(request):
-    return render(request, 'product_details.html', {})
+def product_details(request, sneaker_id):
+    sneaker = get_object_or_404(Sneaker, pk=sneaker_id)
+    return render(request, 'product_details.html', {'sneaker' : sneaker})
 
 def user_signup(request):
     #if the request is post, then the form is submitted
