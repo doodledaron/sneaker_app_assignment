@@ -69,7 +69,7 @@ DATABASES = {
     'default': {
             'ENGINE': 'mssql',
             'NAME': 'test',
-            'USER': 'doodle',
+            'USER': 'Evelyn',
             'PASSWORD': 'Pa$$w0rd',
             'HOST': 'MYSERVER\SQLEXPRESS',
             'PORT': '',
