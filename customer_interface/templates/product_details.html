@@ -14,9 +14,13 @@
 <body>
     <div class="container2">
         <div class="header">
-            <div class="logo">
-                <img src="{% static 'images/logo.png' %}" width="200px">
-            </div>
+
+            <!-- LOGO (HOME BUTTON) -->
+            <button type="button" id="homeButton">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" width="200px" alt="Logo">
+                </a>
+            </button>
 
             <!-- SEARCH AND CART BUTTONS -->
             <div class="buttons">
@@ -25,7 +29,9 @@
                 </button>
 
                 <button type="button" id="cartButton">
-                    <img src="{% static 'images/cart.png' %}" alt="Cart">
+                    <a href="{% url 'cart' %}">
+                        <img src = "{% static 'images/cart.png' %}" alt="Cart">
+                    </a>
                 </button>
             </div>
 

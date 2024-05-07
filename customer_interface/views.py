@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login,logout
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, OrderForm
+from admin_panel.models import Order, Customer
+from datetime import datetime
 
 
 # Create your views here.
@@ -52,6 +54,39 @@ def user_logout(request):
 
 def cart(request):
     return render(request, 'cart.html', {})
+
+#TODO
+def order_form(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            #create an Order object to be saved in database
+            
+            # Retrieve the customer based on the provided email
+            email = form.cleaned_data['email']
+            customer = Customer.objects.get(email=email)
+            
+            # Create a new order instance but don't save it yet
+            order = Order(
+                customer_id=customer,
+                order_total=888,
+                
+                #order_placed_date will automatically generate
+                #order_payment_status will be pending in default
+            )
+            
+            #if tng is chosen, tng_details will have phone number, then card number ,cvv, expirary date will null (NULLABLE FIELD)
+            #if card phone
+            
+            # Save the order to the database
+            order.save()
+            # Redirect to a success page or some other page
+            return redirect('success_page') 
+    else:
+        form = OrderForm()
+    return render(request, 'cart.html', {'form': form})
+
+
 
 #to render the products page: example
 # <!DOCTYPE html>

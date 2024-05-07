@@ -17,10 +17,12 @@
         <!-- HEADER (LOGO, SEARCH, CART) -->
         <div class="header">
 
-            <!-- LOGO -->
-            <div class="logo">
-                <img src="{% static 'images/logo.png' %}" width="200px" alt="Logo">
-            </div>
+            <!-- LOGO (HOME BUTTON) -->
+            <button type="button" id="homeButton">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'images/logo.png' %}" width="200px" alt="Logo">
+                </a>
+            </button>
 
             <!-- SEARCH AND CART BUTTONS -->
             <div class="buttons">
@@ -29,7 +31,9 @@
                 </button>
 
                 <button type="button" id="cartButton">
-                    <img src= "{% static 'images/cart.png' %}" alt="Cart">
+                    <a href="{% url 'cart' %}">
+                        <img src="{% static 'images/cart.png' %}" alt="Cart">
+                    </a>
                 </button>
             </div>
         </div>
@@ -77,7 +81,7 @@
                     <label for="email">
                         <h4>1. EMAIL</h4>
                     </label><br>
-                    <input type="email" id="email" name="email" value=""><br><br>
+                    <input type="email" id="email" name="email" placeholder="abc@gmail.com"><br><br>
 
                     <label for="address">
                         <h4>2. SHIPPING ADDRESS</h4>
@@ -87,18 +91,145 @@
                     <label for="payment">
                         <h4>3. PAYMENT</h4>
                     </label><br>
-                    <select name="payment" id="payment">
+                    <select name="payment" id="payment" onchange="showPaymentDetails()">
+                        <option value="payment-method">-- Select payment method --</option>
                         <option value="touch-n-go">T&G E-wallet</option>
                         <option value="card">Card</option>
                     </select>
                 </div>
 
+                <div id="tngDetails" style="display: none;">
+                    <label for="tng">
+                        <h4>Contact number signed in with T&G:</h4>
+                    </label><br>
+                    <input type="text" id="phone" name="phone" placeholder="01X-XXX XXXX"><br>
+                    <button type="button" class="btn btn-outline-primary">Save</button>
+                </div>
+
+                <div id="cardDetails" style="display: none;">
+                    <h4>Enter your card details:</h4><br>
+
+                    <label for="cardNumber">
+                        <h6>Card Number:</h6>
+                    </label><br>
+                    <input type="text" id="cardNumber" name="cardNumber" value=""><br><br>
+
+                    <label for="expiryDate">
+                        <h6>Expiry Date:</h6>
+                    </label><br>
+                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" value=""><br><br>
+
+                    <label for="cvv">
+                        <h6>CVV:</h6>
+                    </label><br>
+                    <input type="text" id="cvv" name="cvv" value=""><br><br>
+
+                    <button type="button" class="btn btn-outline-primary">Save</button>
+                </div>
+
                 <!-- PROCEED BUTTON -->
-                <button type="button" class="btn btn-dark">PROCEED</button>
+                <!-- <button type="button" class="btn btn-dark" id="proceedButton" data-bs-toggle="modal">
+                    PROCEED
+                </button> -->
+
+                <form method="post" id="myForm">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <!-- PROCEED BUTTON -->
+                    <button type="button" class="btn btn-dark" id="proceedButton" data-bs-toggle="modal">
+                        PROCEED
+                    </button>
+                </form>
+
+                <!-- MODAL FOR PROCEED BUTTON -->
+                <div class="modal fade" id="proceedModal" tabindex="-1" aria-labelledby="proceedModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title, fw-bold" id="proceedModalLabel">Order Successful</h5>
+                            </div>
+                            <div class="modal-body">
+                                Thank you for your purchase!<br>See you again soon :D<br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-success">
+                                    <a href="{% url 'home' %}">
+                                        Back to Home Page
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <script>
+                function showPaymentDetails() {
+                    var paymentMethod = document.getElementById("payment").value;
+                    var tngDetails = document.getElementById("tngDetails");
+                    var cardDetails = document.getElementById("cardDetails");
+
+                    if (paymentMethod === "touch-n-go") {
+                        tngDetails.style.display = "block";
+                        cardDetails.style.display = "none";
+                    } else if (paymentMethod === "card") {
+                        tngDetails.style.display = "none";
+                        cardDetails.style.display = "block";
+                    } else {
+                        tngDetails.style.display = "none";
+                        cardDetails.style.display = "none";
+                    }
+                }
+
+                document.getElementById("proceedButton").addEventListener("click", function () {
+                    if (proceedValidator()) {
+                        console.log("Proceeding...");
+                        var modal = new bootstrap.Modal(document.getElementById('proceedModal'));
+                        modal.show();
+                    } else {
+                        alert("Please fill in all the required fields.");
+                    }
+                })
+
+                function proceedValidator() {
+                    var email = document.getElementById("email").value;
+                    var address = document.getElementById("address").value;
+                    var payment = document.getElementById("payment").value;
+                    var tngDetails = document.getElementById("phone").value;
+                    var cardNumber = document.getElementById("cardNumber").value;
+                    var expiryDate = document.getElementById("expiryDate").value;
+                    var cvv = document.getElementById("cvv").value;
+
+                    if (email === "" || address === "" || payment === "payment-method") {
+                        return false;
+                    }
+
+                    if (payment === "touch-n-go" && tngDetails === "") {
+                        return false;
+                    }
+
+                    if (payment === "card" && (cardNumber === "" || expiryDate === "" || cvv === "")) {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                document.getElementById('expiryDate').addEventListener('input', function (e) {
+                    var input = e.target.value;
+                    input = input.replace(/\D/g, ''); // Remove non-digit characters
+
+                    if (input.length > 2) {
+                        input = input.substring(0, 2) + '/' + input.substring(2, 4); // Format as MM/YY
+                    }
+                    e.target.value = input; // Update input field value
+                });
+                
+            </script>
         </main>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
