@@ -36,4 +36,4 @@ class OrderForm(forms.Form):
     phone = CustomPhoneField(max_length=15)
     cardNumber = forms.CharField()
     expiryDate = forms.CharField()
-    ccv = forms.CharField()
+    ccv = forms.IntegerField()
