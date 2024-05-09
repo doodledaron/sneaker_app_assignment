@@ -44,7 +44,7 @@ class Order(models.Model):
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
     customer_id = models.ForeignKey(Customer, on_delete=models.PROTECT) #models.PROTECT when customer is deleted, the order is not deleted
-    order_total = models.DecimalField(max_digits=6, decimal_places=2)
+    order_total = models.DecimalField(max_digits=8, decimal_places=2)
     order_placed_date = models.DateTimeField(auto_now_add=True)
     order_payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
 
@@ -57,7 +57,7 @@ class Order_Item(models.Model):
 
 class Cart(models.Model):
     customer_id = models.OneToOneField(Customer, on_delete=models.CASCADE)
-    cart_total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    cart_total = models.DecimalField(max_digits=8, decimal_places=2)
 
 class Cart_Item(models.Model):
     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
