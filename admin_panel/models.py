@@ -26,7 +26,7 @@ class Sneaker(models.Model):
     sneaker_name = models.CharField(max_length=100)
     sneaker_price = models.DecimalField(max_digits=7, decimal_places=2)
     sneaker_inventory = models.IntegerField()
-    sneaker_url = models.URLField() 
+    sneaker_img = models.BinaryField() 
     
 class Sneaker_Size(models.Model):
     sneaker_id = models.ForeignKey(Sneaker, on_delete=models.CASCADE)
@@ -65,3 +65,5 @@ class Cart_Item(models.Model):
     sneaker_size = models.IntegerField()
     sneaker_quantity = models.IntegerField()
     total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+
+
