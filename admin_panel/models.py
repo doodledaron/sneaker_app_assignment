@@ -26,7 +26,7 @@ class Sneaker(models.Model):
     sneaker_name = models.CharField(max_length=100)
     sneaker_price = models.DecimalField(max_digits=7, decimal_places=2)
     sneaker_inventory = models.IntegerField()
-    sneaker_url = models.URLField() 
+    sneaker_img = models.BinaryField(null=True)  
     
 class Sneaker_Size(models.Model):
     sneaker_id = models.ForeignKey(Sneaker, on_delete=models.CASCADE)
@@ -44,8 +44,8 @@ class Order(models.Model):
         (PAYMENT_STATUS_FAILED, 'Failed')
     ]
     customer_id = models.ForeignKey(Customer, on_delete=models.PROTECT) #models.PROTECT when customer is deleted, the order is not deleted
-    order_total = models.DecimalField(max_digits=8, decimal_places=2)
-    order_placed_date = models.DateTimeField(auto_now_add=True)
+    order_total = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    order_placed_date = models.DateTimeField(auto_now_add=True) #will be automatically generated in the database
     order_payment_status = models.CharField(max_length=1, choices=PAYMENT_STATUS_CHOICES, default=PAYMENT_STATUS_PENDING)
 
 class Order_Item(models.Model):
@@ -53,15 +53,16 @@ class Order_Item(models.Model):
     sneaker_id = models.ForeignKey(Sneaker, on_delete=models.PROTECT)
     sneaker_size = models.IntegerField()
     sneaker_quantity = models.IntegerField()
-    total_price = models.DecimalField(max_digits=7, decimal_places=2)
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True) #this will be done in ssms
 
 class Cart(models.Model):
     customer_id = models.OneToOneField(Customer, on_delete=models.CASCADE)
-    cart_total = models.DecimalField(max_digits=8, decimal_places=2)
+    cart_total = models.DecimalField(max_digits=8, decimal_places=2, null=True)
 
 class Cart_Item(models.Model):
     cart_id = models.ForeignKey(Cart, on_delete=models.CASCADE)
     sneaker_id = models.ForeignKey(Sneaker, on_delete=models.CASCADE)
     sneaker_size = models.IntegerField()
     sneaker_quantity = models.IntegerField()
-    total_price = models.DecimalField(max_digits=7, decimal_places=2)
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+

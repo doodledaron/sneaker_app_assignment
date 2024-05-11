@@ -1,111 +1,221 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Carpe Diem - Cart</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
 
-<body>
+  <body>
     <div class="container">
+      <!-- HEADER (LOGO, SEARCH, CART) -->
+      <div class="header">
+        <!-- LOGO (HOME BUTTON) -->
+        <button type="button" id="homeButton"><a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" width="200px" alt="Logo" /></a></button>
 
-        <!-- HEADER (LOGO, SEARCH, CART) -->
-        <div class="header">
+        <!-- SEARCH AND CART BUTTONS -->
+        <div class="buttons">
+          <button type="button" id="searchButton"><img src="{% static 'images/search.png' %}" alt="Search" /></button>
 
-            <!-- LOGO -->
-            <div class="logo">
-                <img src="{% static 'images/logo.png' %}" width="200px" alt="Logo">
-            </div>
+          <button type="button" id="cartButton"><a href="{% url 'cart' %}"><img src="{% static 'images/cart.png' %}" alt="Cart" /></a></button>
+        </div>
+      </div>
 
-            <!-- SEARCH AND CART BUTTONS -->
-            <div class="buttons">
-                <button type="button" id="searchButton">
-                    <img src="{% static 'images/search.png' %}" alt="Search">
-                </button>
+      <!-- PAYMENT PAGE MAIN -->
+      <main class="main">
+        <!-- ORDER SUMMARY -->
+        <div class="order-summary">
+          <h4 class="fw-bold">Order Summary</h4>
+          <h5 class="fw-bold">TOTAL: RM 7,230</h5>
 
-                <button type="button" id="cartButton">
-                    <img src= "{% static 'images/cart.png' %}" alt="Cart">
-                </button>
-            </div>
+          <div class="cart-product">
+            {% for cart_item in cart_items %}
+              <img src="data:image/png;base64,{{ cart_item.sneaker_id.sneaker_img }}" />
+
+              <div class="product-details">
+                <p class="fw-bold">{{ cart_item.sneaker_id.sneaker_name }}</p>
+                <li>
+                    {{cart_item.sneaker_id_id}}
+                  {{ cart_item.sneaker_id.sneaker_brand }}<br />
+                  SIZE: {{ cart_item.sneaker_size }}<br />
+                  QUANTITY: {{ cart_item.sneaker_quantity }}<br />
+                  PRICE: {{ cart_item.sneaker_id.sneaker_price }}<br />
+                </li>
+
+                
+              </div>
+            {% endfor %}
+          </div>
         </div>
 
-        <!-- PAYMENT PAGE MAIN -->
-        <main class="main">
+        <!-- CUSTOMER DETAILS TO BE ENTERED -->
+        <div class="customer-details">
+          <form method="post" id="myForm">
+            {% csrf_token %}
+            <div class="form">
+              <label for="email"><h4>1. EMAIL</h4></label><br />
+              <input type="email" id="email" name="email" placeholder="abc@gmail.com" /><br /><br />
 
-            <!-- ORDER SUMMARY -->
-            <div class="order-summary">
-                <h4 class="fw-bold">Order Summary</h4>
-                <h5 class="fw-bold">TOTAL: RM 7,230</h5>
+              <label for="address"><h4>2. SHIPPING ADDRESS</h4></label><br />
+              <input type="text" id="address" name="address" value="" /><br /><br />
 
-                <div class="cart-product">
-
-                    <img src="{% static 'images/s3.png' %}">
-
-                    <div class="product-details">
-                        <p class="fw-bold">VERY VIVIER STRASS BUCKLE SNEAKERS IN LEATHER</p>
-                        <li>
-                            BRAND: ROGER VIVIER<br>
-                            SIZE: 6<br>
-                            QUANTITY: 1<br>
-                            PRICE: RM 3,200<br>
-                        </li>
-                    </div>
-
-                    <img src="{% static 'images/s5.jpg' %}">
-
-                    <div class="product-details">
-                        <p class="fw-bold">LOW-TOP SNEAKERS IN PERFORATED LEATHER</p>
-                        <li>
-                            BRAND: YSL<br>
-                            SIZE: 6<br>
-                            QUANTITY: 1<br>
-                            PRICE: RM 4,030<br>
-                        </li>
-                    </div>
-                </div>
+              <label for="payment"><h4>3. PAYMENT</h4></label><br />
+              <select name="payment" id="payment" onchange="showPaymentDetails()">
+                <option value="payment-method">-- Select payment method --</option>
+                <option value="touch-n-go">T&G E-wallet</option>
+                <option value="card">Card</option>
+              </select>
             </div>
 
-            <!-- CUSTOMER DETAILS TO BE ENTERED -->
-            <div class="customer-details">
-
-                <div class="form">
-                    <label for="email">
-                        <h4>1. EMAIL</h4>
-                    </label><br>
-                    <input type="email" id="email" name="email" value=""><br><br>
-
-                    <label for="address">
-                        <h4>2. SHIPPING ADDRESS</h4>
-                    </label><br>
-                    <input type="text" id="address" name="address" value=""><br><br>
-
-                    <label for="payment">
-                        <h4>3. PAYMENT</h4>
-                    </label><br>
-                    <select name="payment" id="payment">
-                        <option value="touch-n-go">T&G E-wallet</option>
-                        <option value="card">Card</option>
-                    </select>
-                </div>
-
-                <!-- PROCEED BUTTON -->
-                <button type="button" class="btn btn-dark">PROCEED</button>
+            <div id="tngDetails" style="display: none;">
+              <label for="tng"><h4>Contact number signed in with T&G:</h4></label><br />
+              <input type="text" id="phone" name="phone" placeholder="01X-XXX XXXX" /><br />
+              <button type="button" class="btn btn-outline-primary">Save</button>
             </div>
-        </main>
+
+            <div id="cardDetails" style="display: none;">
+              <h4>Enter your card details:</h4><br />
+
+              <label for="cardNumber"><h6>Card Number:</h6></label><br />
+              <input type="text" id="cardNumber" name="cardNumber" value="" /><br /><br />
+
+              <label for="expiryDate"><h6>Expiry Date:</h6></label><br />
+              <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" value="" /><br /><br />
+
+              <label for="cvv"><h6>CVV:</h6></label><br />
+              <input type="text" id="cvv" name="cvv" value="" /><br /><br />
+
+              <button type="button" class="btn btn-outline-primary">Save</button>
+            </div>
+
+            <!-- PROCEED BUTTON -->
+            <button type="button" class="btn btn-dark" id="proceedButton" data-bs-toggle="modal">PROCEED</button>
+          </form>
+
+          <!-- MODAL FOR PROCEED BUTTON -->
+          <div class="modal fade" id="proceedModal" tabindex="-1" aria-labelledby="proceedModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title, fw-bold" id="proceedModalLabel">Order Successful</h5>
+                </div>
+                <div class="modal-body">
+                  Thank you for your purchase!<br />See you again soon :D<br />
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-success"><a href="{% url 'index' %}">Back to Home Page</a></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <script>
+    
+                function showPaymentDetails() {
+                    var paymentMethod = document.getElementById("payment").value;
+                    var tngDetails = document.getElementById("tngDetails");
+                    var cardDetails = document.getElementById("cardDetails");
+
+                    if (paymentMethod === "touch-n-go") {
+                        tngDetails.style.display = "block";
+                        cardDetails.style.display = "none";
+                    } else if (paymentMethod === "card") {
+                        tngDetails.style.display = "none";
+                        cardDetails.style.display = "block";
+                    } else {
+                        tngDetails.style.display = "none";
+                        cardDetails.style.display = "none";
+                    }
+                }
+                document.getElementById("proceedButton").addEventListener("click", function () {
+                    if (proceedValidator()) {
+                        console.log("Proceeding...");
+
+                        //get the cart items data to create Order_Item
+                        var cartItems = document.getElementsByClassName("cart-product");
+                        var cartData = [];
+                    
+                        for (var i = 0; i < cartItems.length; i++) {
+                          var item = {};
+                    
+                          // Assuming details are within a child element with class "product-details"
+                          var productDetails = cartItems[i].querySelector(".product-details");
+                    
+                          // Access data from child elements
+                          item.sneaker_id = productDetails.querySelector("p.fw-bold").textContent; 
+                          item.sneaker_size = productDetails.querySelector("li").textContent.split("SIZE: ")[1].trim();
+                          item.sneaker_quantity = productDetails.querySelector("li").textContent.split("QUANTITY: ")[1].trim();
+                    
+                          cartData.push(item);
+                        }
+                    
+                        //at the browser, right click inspect, console, to see the cartData
+                        console.log(cartData);
+                        
+                       
+                        var formData = new FormData(document.getElementById("myForm"));
+                        formData.append("cartData", JSON.stringify(cartData)); //append the cart data
+                        fetch("{% url 'proceed_order' %}", {
+                            method: "POST",
+                            body: formData,
+                        })
+                        .then((response) => {
+                            if (response.ok) {
+                                var modal = new bootstrap.Modal(document.getElementById('proceedModal'));
+                        modal.show();
+                            } else {
+                                throw new Error('Error occurred while processing the order. Please try again.');
+                            }
+                        })
+                        
+                    } else {
+                        alert("Please fill in all the required fields.");
+                    }
+                })
+
+                function proceedValidator() {
+                    var email = document.getElementById("email").value;
+                    var address = document.getElementById("address").value;
+                    var payment = document.getElementById("payment").value;
+                    var tngDetails = document.getElementById("phone").value;
+                    var cardNumber = document.getElementById("cardNumber").value;
+                    var expiryDate = document.getElementById("expiryDate").value;
+                    var cvv = document.getElementById("cvv").value;
+
+                    if (email === "" || address === "" || payment === "payment-method") {
+                        return false;
+                    }
+
+                    if (payment === "touch-n-go" && tngDetails === "") {
+                        return false;
+                    }
+
+                    if (payment === "card" && (cardNumber === "" || expiryDate === "" || cvv === "")) {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                document.getElementById('expiryDate').addEventListener('input', function (e) {
+                    var input = e.target.value;
+                    input = input.replace(/\D/g, ''); // Remove non-digit characters
+
+                    if (input.length > 2) {
+                        input = input.substring(0, 2) + '/' + input.substring(2, 4); // Format as MM/YY
+                    }
+                    e.target.value = input; // Update input field value
+                });
+                
+            </script>
+      </main>
     </div>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
-        crossorigin="anonymous"></script>
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+  </body>
 </html>
