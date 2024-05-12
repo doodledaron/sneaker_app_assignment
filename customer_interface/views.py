@@ -149,6 +149,9 @@ def get_cart_items(request):
 
         #get the cart
         cart = Cart.objects.get(customer_id=customer.id)
+
+        #get the cart_total
+        cart_total = cart.cart_total
         
         #get the cart items
         cart_items = Cart_Item.objects.filter(cart_id=cart.id).select_related('sneaker_id')
@@ -164,7 +167,7 @@ def get_cart_items(request):
     #     sneaker_name = cart_item.sneaker_id.sneaker_name
     #     print(f"Sneaker Name: {sneaker_name}")
 
-    return render(request, 'cart.html', {'cart_items' : cart_items})
+    return render(request, 'cart.html', {'cart_items' : cart_items, 'cart_total' : cart_total})
 
 
 def proceed_order(request):
@@ -219,11 +222,10 @@ def proceed_order(request):
 
         print(request.POST.getlist('cartData'))
         #create order item. The cartData is from the cart.html
-        for cart_item in request.POST.getlist('cartData'):
-            cart_item = cart_item.split(',')
-            sneaker_id = cart_item[0]
-            sneaker_size = cart_item[1]
-            sneaker_quantity = cart_item[2]
+        for cart_item in cart_items:
+            sneaker_id = cart_item['sneaker_id']
+            sneaker_size = cart_item['sneaker_size']
+            sneaker_quantity = cart_item['sneaker_quantity']
             total_price = None
 
             order_item = Order_Item(
