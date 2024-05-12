@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path('', include('customer_interface.urls')), #the path for the home page
     path('admin/', admin.site.urls),
+    path("__debug__/", include("debug_toolbar.urls")),
     path('admin_panel/', include('admin_panel.urls')), #the path for the admin panel
     path('customer_interface/', include('customer_interface.urls')), #the path for the customer interface
 ]

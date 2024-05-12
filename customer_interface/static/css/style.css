@@ -221,36 +221,47 @@
     margin-left: 70px;
 }
 
-.product .s2,
-.product .s3,
-.product .s4,
-.product .s5,
-.product .s6,
-.product .s7,
-.product .s8,
-.product .s9 {
+.product {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap; /* Allow items to wrap to the next row */
+    justify-content: space-between; /* Distribute items evenly along the main axis */
+}
+
+.product .sneaker {
+    display: flex;
+    justify-content: center;
     align-items: center;
     flex: 0 0 calc(25% - 20px); /* Set width of each item */
-    text-align: center;
+    width: calc(25% - 20px); /* Set width of each item with margin */
     margin-bottom: 20px; /* Adjust spacing between items */
 }
 
-.product img {
+.home-sneaker-container {
+    margin-top: 100px;
+}
+
+.sneaker img {
     width: 100%; /* Ensure images fill their containers */
     height: 100%;
     max-width: 220px;
     max-height: 280px;
     border-radius: 20px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.product p {
-    margin-top: 10px; /* Adjust spacing between image and text */
-    font-size: 12px;
+
+/* Apply styles when the image is hovered */
+.sneaker img:hover {
+    /* Add your hover styles here */
+    opacity: 0.7; /* Example: reduce opacity */
+}
+
+.sneaker p {
+    margin-top: 20px; /* Adjust spacing between image and text */
+    font-size: 15px;
     max-width: 175px;
     font-family: "Playfair Display", serif;
+    align-content: center;
 }
 
 .product .s2,

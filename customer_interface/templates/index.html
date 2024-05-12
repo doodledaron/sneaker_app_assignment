@@ -49,42 +49,25 @@
             </div>
             
         </div>
-
-        <div class="product">
-            <div class="s2">
-                <img src = "{% static 'images/s2.png' %}">
-                <p>CHANEL TRAINER SNEAKER</p>
+        <div class="home-sneaker-container">
+            {% for sneaker in sneakers %}
+            {% if forloop.counter0|divisibleby:4 %}
+            <div class="row">
+            {% endif %}
+                <div class="col-md-3">
+                    <div class="sneaker">
+                        <a href="{% url 'product_details' sneaker.sneaker_id %}">
+                            <img src="data:image/png;base64,{{ sneaker.sneaker_img }}" class="img-fluid">
+                        </a>
+                        <p>{{ sneaker.sneaker_name }}</p>
+                    </div>
+                </div>
+            {% if forloop.counter|divisibleby:4 or forloop.last %}
             </div>
-            <div class="s3">
-                <img src = "{% static 'images/s3.png' %}">
-                <p>VERY VIVIER STRASS BUCKLE SNEAKERS IN LEATHER</p>
-            </div>
-            <div class="s4">
-                <img src = "{% static 'images/s4.png' %}">
-                <p>WALK'N'DIOR PLATFORM SNEAKER</p>
-            </div>
-            <div class="s5">
-                <img src = "{% static 'images/s5.jpg' %}">
-                <p>LOW-TOP SNEAKERS IN PERFORATED LEATHER</p>
-            </div>
-            <div class="s6">
-                <img src = "{% static 'images/s6.png' %}">
-                <p>LV TRAINER MAXI SNEAKER</p>
-            </div>
-            <div class="s7">
-                <img src = "{% static 'images/s7.png' %}">
-                <p>DOUBLE WHEEL RE-NYLON GABARDINE SNEAKER</p>
-            </div>
-            <div class="s8">
-                <img src ="{% static 'images/s8.png' %}">
-                <p>WOMEN'S TRIPLE S SNEAKER IN BLACK</p>
-            </div>
-            <div class="s9">
-                <img src = "{% static 'images/s9.png' %}">
-                <p>LOW LACE-UP SNEAKER IN CALFSKIN</p>
-            </div>
+            {% endif %}
+            {% endfor %}
         </div>
-
+        
     </div> 
     {% else %}
     <a href="{% url 'login' %}">Login</a>
