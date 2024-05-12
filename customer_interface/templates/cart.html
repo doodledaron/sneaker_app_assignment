@@ -32,14 +32,6 @@
           <h5 class="fw-bold">TOTAL: RM 7,230</h5>
 
           <div class="cart-product">
-            {% for cart_item in cart_items %}
-              <img src="data:image/png;base64,{{ cart_item.sneaker_id.sneaker_img }}" />
-
-              <div class="product-details">
-                <p class="fw-bold">{{ cart_item.sneaker_id.sneaker_name }}</p>
-                <li>
-                    {{cart_item.sneaker_id_id}}
-                  {{ cart_item.sneaker_id.sneaker_brand }}<br />
                   SIZE: {{ cart_item.sneaker_size }}<br />
                   QUANTITY: {{ cart_item.sneaker_quantity }}<br />
                   PRICE: {{ cart_item.sneaker_id.sneaker_price }}<br />
@@ -57,7 +49,6 @@
             {% csrf_token %}
             <div class="form">
               <label for="email"><h4>1. EMAIL</h4></label><br />
-              <input type="email" id="email" name="email" placeholder="abc@gmail.com" /><br /><br />
 
               <label for="address"><h4>2. SHIPPING ADDRESS</h4></label><br />
               <input type="text" id="address" name="address" value="" /><br /><br />
