@@ -194,7 +194,7 @@ def proceed_order(request):
             tng_details = None
             card_number = request.POST.get('cardNumber')
             expiry_date = request.POST.get('expiryDate')
-            cvv = request.POST.get('ccv')
+            cvv = request.POST.get('cvv')
             customer.customer_payment_method = payment_method
             customer.tng_details = tng_details
             customer.card_number = card_number
@@ -219,11 +219,10 @@ def proceed_order(request):
 
         print(request.POST.getlist('cartData'))
         #create order item. The cartData is from the cart.html
-        for cart_item in request.POST.getlist('cartData'):
-            cart_item = cart_item.split(',')
-            sneaker_id = cart_item[0]
-            sneaker_size = cart_item[1]
-            sneaker_quantity = cart_item[2]
+        for cart_item in cart_items:
+            sneaker_id = cart_item['sneaker_id']
+            sneaker_size = cart_item['sneaker_size']
+            sneaker_quantity = cart_item['sneaker_quantity']
             total_price = None
 
             order_item = Order_Item(
