@@ -69,14 +69,12 @@ WSGI_APPLICATION = 'sneaker_app.wsgi.application'
 
 DATABASES = {
     'default': {
-            'ENGINE': 'mssql',
-            'NAME': 'test',
-            'USER': 'doodle',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'database_ass',
+            'USER': 'admin',
             'PASSWORD': 'Pa$$w0rd',
-            'HOST': 'MYSERVER\SQLEXPRESS',
-            'PORT': '',
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',}, 
+            'HOST': 'database-1.cx6ogb0yascf.us-east-1.rds.amazonaws.com',
+            'PORT': 3306,
 }
 }
 
