@@ -32,20 +32,38 @@
           <h5 class="fw-bold">TOTAL: RM 7,230</h5>
 
           <div class="cart-product">
+            {% comment %} <img src="data:image/png;base64,{{ cart_item.sneaker_id.sneaker_img }}" /> {% endcomment %}
             {% for cart_item in cart_items %}
-              <img src="data:image/png;base64,{{ cart_item.sneaker_id.sneaker_img }}" />
+              <!-- Displaying the sneaker image dynamically -->
+              {% if cart_item.sneaker_id_id == 'S-1' %}
+                <img src="{% static 'images/s1.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-2' %}
+                <img src="{% static 'images/s2.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-3' %}
+                <img src="{% static 'images/s3.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-4' %}
+                <img src="{% static 'images/s4.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-5' %}
+                <img src="{% static 'images/s5.jpg' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-6' %}
+                <img src="{% static 'images/s6.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-7' %}
+                <img src="{% static 'images/s7.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-8' %}
+                <img src="{% static 'images/s8.png' %}" />
+              {% elif cart_item.sneaker_id_id == 'S-9' %}
+                <img src="{% static 'images/s9.png' %}" />
+              {% endif %}
 
               <div class="product-details">
                 <p class="fw-bold">{{ cart_item.sneaker_id.sneaker_name }}</p>
                 <li>
-                    {{cart_item.sneaker_id_id}}
+                  {{ cart_item.sneaker_id_id }}
                   {{ cart_item.sneaker_id.sneaker_brand }}<br />
                   SIZE: {{ cart_item.sneaker_size }}<br />
                   QUANTITY: {{ cart_item.sneaker_quantity }}<br />
                   PRICE: {{ cart_item.sneaker_id.sneaker_price }}<br />
                 </li>
-
-                
               </div>
             {% endfor %}
           </div>
@@ -114,104 +132,99 @@
         </div>
 
         <script>
-    
-                function showPaymentDetails() {
-                    var paymentMethod = document.getElementById("payment").value;
-                    var tngDetails = document.getElementById("tngDetails");
-                    var cardDetails = document.getElementById("cardDetails");
-
-                    if (paymentMethod === "touch-n-go") {
-                        tngDetails.style.display = "block";
-                        cardDetails.style.display = "none";
-                    } else if (paymentMethod === "card") {
-                        tngDetails.style.display = "none";
-                        cardDetails.style.display = "block";
-                    } else {
-                        tngDetails.style.display = "none";
-                        cardDetails.style.display = "none";
-                    }
+          function showPaymentDetails() {
+            var paymentMethod = document.getElementById('payment').value
+            var tngDetails = document.getElementById('tngDetails')
+            var cardDetails = document.getElementById('cardDetails')
+          
+            if (paymentMethod === 'touch-n-go') {
+              tngDetails.style.display = 'block'
+              cardDetails.style.display = 'none'
+            } else if (paymentMethod === 'card') {
+              tngDetails.style.display = 'none'
+              cardDetails.style.display = 'block'
+            } else {
+              tngDetails.style.display = 'none'
+              cardDetails.style.display = 'none'
+            }
+          }
+          document.getElementById('proceedButton').addEventListener('click', function () {
+            if (proceedValidator()) {
+              console.log('Proceeding...')
+          
+              //get the cart items data to create Order_Item
+              var cartItems = document.getElementsByClassName('cart-product')
+              var cartData = []
+          
+              for (var i = 0; i < cartItems.length; i++) {
+                var item = {}
+          
+                // Assuming details are within a child element with class "product-details"
+                var productDetails = cartItems[i].querySelector('.product-details')
+          
+                // Access data from child elements
+                item.sneaker_id = productDetails.querySelector('p.fw-bold').textContent
+                item.sneaker_size = productDetails.querySelector('li').textContent.split('SIZE: ')[1].trim()
+                item.sneaker_quantity = productDetails.querySelector('li').textContent.split('QUANTITY: ')[1].trim()
+          
+                cartData.push(item)
+              }
+          
+              //at the browser, right click inspect, console, to see the cartData
+              console.log(cartData)
+          
+              var formData = new FormData(document.getElementById('myForm'))
+              formData.append('cartData', JSON.stringify(cartData)) //append the cart data
+              fetch("{% url 'proceed_order' %}", {
+                method: 'POST',
+                body: formData
+              }).then((response) => {
+                if (response.ok) {
+                  var modal = new bootstrap.Modal(document.getElementById('proceedModal'))
+                  modal.show()
+                } else {
+                  throw new Error('Error occurred while processing the order. Please try again.')
                 }
-                document.getElementById("proceedButton").addEventListener("click", function () {
-                    if (proceedValidator()) {
-                        console.log("Proceeding...");
-
-                        //get the cart items data to create Order_Item
-                        var cartItems = document.getElementsByClassName("cart-product");
-                        var cartData = [];
-                    
-                        for (var i = 0; i < cartItems.length; i++) {
-                          var item = {};
-                    
-                          // Assuming details are within a child element with class "product-details"
-                          var productDetails = cartItems[i].querySelector(".product-details");
-                    
-                          // Access data from child elements
-                          item.sneaker_id = productDetails.querySelector("p.fw-bold").textContent; 
-                          item.sneaker_size = productDetails.querySelector("li").textContent.split("SIZE: ")[1].trim();
-                          item.sneaker_quantity = productDetails.querySelector("li").textContent.split("QUANTITY: ")[1].trim();
-                    
-                          cartData.push(item);
-                        }
-                    
-                        //at the browser, right click inspect, console, to see the cartData
-                        console.log(cartData);
-                        
-                       
-                        var formData = new FormData(document.getElementById("myForm"));
-                        formData.append("cartData", JSON.stringify(cartData)); //append the cart data
-                        fetch("{% url 'proceed_order' %}", {
-                            method: "POST",
-                            body: formData,
-                        })
-                        .then((response) => {
-                            if (response.ok) {
-                                var modal = new bootstrap.Modal(document.getElementById('proceedModal'));
-                        modal.show();
-                            } else {
-                                throw new Error('Error occurred while processing the order. Please try again.');
-                            }
-                        })
-                        
-                    } else {
-                        alert("Please fill in all the required fields.");
-                    }
-                })
-
-                function proceedValidator() {
-                    var email = document.getElementById("email").value;
-                    var address = document.getElementById("address").value;
-                    var payment = document.getElementById("payment").value;
-                    var tngDetails = document.getElementById("phone").value;
-                    var cardNumber = document.getElementById("cardNumber").value;
-                    var expiryDate = document.getElementById("expiryDate").value;
-                    var cvv = document.getElementById("cvv").value;
-
-                    if (email === "" || address === "" || payment === "payment-method") {
-                        return false;
-                    }
-
-                    if (payment === "touch-n-go" && tngDetails === "") {
-                        return false;
-                    }
-
-                    if (payment === "card" && (cardNumber === "" || expiryDate === "" || cvv === "")) {
-                        return false;
-                    }
-
-                    return true;
-                }
-
-                document.getElementById('expiryDate').addEventListener('input', function (e) {
-                    var input = e.target.value;
-                    input = input.replace(/\D/g, ''); // Remove non-digit characters
-
-                    if (input.length > 2) {
-                        input = input.substring(0, 2) + '/' + input.substring(2, 4); // Format as MM/YY
-                    }
-                    e.target.value = input; // Update input field value
-                });
-                
-            </script>
+              })
+            } else {
+              alert('Please fill in all the required fields.')
+            }
+          })
+          
+          function proceedValidator() {
+            var email = document.getElementById('email').value
+            var address = document.getElementById('address').value
+            var payment = document.getElementById('payment').value
+            var tngDetails = document.getElementById('phone').value
+            var cardNumber = document.getElementById('cardNumber').value
+            var expiryDate = document.getElementById('expiryDate').value
+            var cvv = document.getElementById('cvv').value
+          
+            if (email === '' || address === '' || payment === 'payment-method') {
+              return false
+            }
+          
+            if (payment === 'touch-n-go' && tngDetails === '') {
+              return false
+            }
+          
+            if (payment === 'card' && (cardNumber === '' || expiryDate === '' || cvv === '')) {
+              return false
+            }
+          
+            return true
+          }
+          
+          document.getElementById('expiryDate').addEventListener('input', function (e) {
+            var input = e.target.value
+            input = input.replace(/\D/g, '') // Remove non-digit characters
+          
+            if (input.length > 2) {
+              input = input.substring(0, 2) + '/' + input.substring(2, 4) // Format as MM/YY
+            }
+            e.target.value = input // Update input field value
+          })
+        </script>
       </main>
     </div>
 

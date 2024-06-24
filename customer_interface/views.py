@@ -31,7 +31,7 @@ def index(request):
         for sneaker in sneakers:
             if sneaker.sneaker_img:
                 sneaker.sneaker_img = base64.b64encode(sneaker.sneaker_img).decode('utf-8')
-    
+        print(len(sneakers))
         return render(request, 'index.html', {'sneakers' : sneakers})
     except Exception as e:
         # handle the exception here
@@ -106,6 +106,10 @@ def user_signup(request):
 
             #save the customer
             customer.save()
+            
+            # Create a cart for the customer
+            cart = Cart(customer_id=customer)
+            cart.save()
 
             #redirect to login page
             return redirect('login')
@@ -152,8 +156,8 @@ def get_cart_items(request):
         
         #get the cart items
         cart_items = Cart_Item.objects.filter(cart_id=cart.id).select_related('sneaker_id')
-        for cart_item in cart_items:
-            cart_item.sneaker_id.sneaker_img = base64.b64encode(cart_item.sneaker_id.sneaker_img).decode('utf-8')
+        # for cart_item in cart_items:
+        #     cart_item.sneaker_id.sneaker_img = base64.b64encode(cart_item.sneaker_id.sneaker_img).decode('utf-8')
 
     except Exception as e:
         # handle the exception here

@@ -38,7 +38,27 @@
 
         <div class="item">
             <div class="image">
-                <img src="data:image/png;base64,{{ sneaker.sneaker_img }}" width="400px">
+                {% comment %} <img src="data:image/png;base64,{{ sneaker.sneaker_img }}" width="400px"> {% endcomment %}
+                                            <!-- Displaying the sneaker image dynamically -->
+                                            {% if sneaker.sneaker_id == 'S-1' %}
+                                            <img src="{% static 'images/s1.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-2' %}
+                                            <img src="{% static 'images/s2.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-3' %}
+                                            <img src="{% static 'images/s3.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-4' %}
+                                            <img src="{% static 'images/s4.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-5' %}
+                                            <img src="{% static 'images/s5.jpg' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-6' %}
+                                            <img src="{% static 'images/s6.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-7' %}
+                                            <img src="{% static 'images/s7.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-8' %}
+                                            <img src="{% static 'images/s8.png' %}" width="400px">
+                                        {% elif sneaker.sneaker_id == 'S-9' %}
+                                            <img src="{% static 'images/s9.png' %}" width="400px">
+                                        {% endif %}
             </div>
             <div class="sneaker-info">
                 <h3 class="fw-bold">{{sneaker.sneaker_name}}

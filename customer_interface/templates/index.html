@@ -52,7 +52,26 @@
                 <div class="col-md-3">
                     <div class="sneaker">
                         <a href="{% url 'product_details' sneaker.sneaker_id %}">
-                            <img src="data:image/png;base64,{{ sneaker.sneaker_img }}" class="img-fluid">
+                            <!-- Displaying the sneaker image dynamically -->
+                            {% if sneaker.sneaker_id == 'S-1' %}
+                                <img src="{% static 'images/s1.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-2' %}
+                                <img src="{% static 'images/s2.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-3' %}
+                                <img src="{% static 'images/s3.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-4' %}
+                                <img src="{% static 'images/s4.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-5' %}
+                                <img src="{% static 'images/s5.jpg' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-6' %}
+                                <img src="{% static 'images/s6.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-7' %}
+                                <img src="{% static 'images/s7.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-8' %}
+                                <img src="{% static 'images/s8.png' %}" class="img-fluid">
+                            {% elif sneaker.sneaker_id == 'S-9' %}
+                                <img src="{% static 'images/s9.png' %}" class="img-fluid">
+                            {% endif %}
                         </a>
                         <p>{{ sneaker.sneaker_name }}</p>
                     </div>
